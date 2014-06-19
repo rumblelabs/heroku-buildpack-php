@@ -194,7 +194,7 @@ if [[ $engine == "php" ]]; then
     # Special treatment for oauth
     status "Copying oauth into extension dir"
     cp $BP_DIR
-    cp "${$BP_DIR}/conf/php/ext/oauth.so" "$(basename $(php-config --extension-dir))"
+    cp "${$BP_DIR}/conf/php/ext/oauth.so" "${PHP_EXT_DIR}"
 
     newrelic_installed=false
     if [[ -n "$exts" ]]; then
