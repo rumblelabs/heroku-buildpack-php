@@ -194,7 +194,8 @@ if [[ $engine == "php" ]]; then
     # Special treatment for oauth
     status "Installing Oauth via PECL. "
     warning "This is in testing - hoping that items that are pushed via buildpack to /app/.heroku/ are kept."
-    pecl install oauth
+    # This installs oauth via pecl silently.
+    printf "\n" | pecl install oauth
 
     newrelic_installed=false
     if [[ -n "$exts" ]]; then
