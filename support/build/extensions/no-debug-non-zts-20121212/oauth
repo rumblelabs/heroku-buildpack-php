@@ -17,7 +17,8 @@ dep_url=http://pecl.php.net/get/${dep_archive_name}
 
 echo "-----> Building ext/oauth ${dep_version}..."
 
-curl -L ${dep_url} | tar xz
+# Adding vf for error logging.
+curl -L ${dep_url} | tar xzvf
 
 pushd ${dep_dirname}
 export PATH=${OUT_PREFIX}/bin:${PATH}
