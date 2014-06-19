@@ -9,7 +9,7 @@ install_ext () {
     local ext_dir=$(basename $(php-config --extension-dir))
     if [[ -f "$ext_ini" ]]; then
         if [[ ! -f "$PHP_EXT_DIR/$ext.so" ]]; then
-            curl --location "${S3_URL}/extensions/${ext_dir}/${ext}.tar.gz" | tar xz -C $BUILD_DIR/.heroku/php
+            curl --silent --location "${S3_URL}/extensions/${ext_dir}/${ext}.tar.gz" | tar xz -C $BUILD_DIR/.heroku/php
             echo "- ${ext} (${reason}; downloaded, using 'ext-${ext}.ini')" | indent
         else
             echo "- ${ext} (${reason}; bundled, using 'ext-${ext}.ini')" | indent
@@ -190,6 +190,12 @@ if [[ $engine == "php" ]]; then
     if [[ -f "composer.json" ]]; then
         exts=$(cat composer.json | python -c 'from __future__ import print_function; import sys, json; { print(key[4:]) for key in json.load(sys.stdin)["require"] if key.startswith("ext-")}' 2> /dev/null || true)
     fi
+
+    # Special treatment for oauth
+    status "Copying oauth into extension dir"
+    cp $BP_DIR
+    cp "${$BP_DIR}/conf/php/ext/oauth.so" "$(basename $(php-config --extension-dir))"
+
     newrelic_installed=false
     if [[ -n "$exts" ]]; then
         while read -r ext; do
