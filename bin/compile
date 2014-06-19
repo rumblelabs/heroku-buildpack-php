@@ -192,8 +192,9 @@ if [[ $engine == "php" ]]; then
     fi
 
     # Special treatment for oauth
-    status "Copying oauth into extension dir"
-    cp "${BP_DIR}/conf/php/ext/oauth.so" "${PHP_EXT_DIR}"
+    status "Installing Oauth via PECL. "
+    warning "This is in testing - hoping that items that are pushed via buildpack to /app/.heroku/ are kept."
+    pecl install oauth
 
     newrelic_installed=false
     if [[ -n "$exts" ]]; then
