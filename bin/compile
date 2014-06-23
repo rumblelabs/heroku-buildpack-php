@@ -194,8 +194,13 @@ if [[ $engine == "php" ]]; then
     # Special treatment for oauth
     status "Installing Oauth via PECL. " | indent
     warning "This is in testing - hoping that items that are pushed via buildpack to /app/.heroku/ are kept." | indent
-    # This installs oauth via pecl silently.
+    # This installs oauth via pecl not-so silently.
     pecl install oauth
+
+    status "Installing Xdebug via PECL. " | indent
+    warning "This should be disabled in production." | indent
+    pecl install xdebug
+    echo "zend_extension = $(php-config --extension-dir)/xdebug.so" > "${BUILD_DIR}/.heroku/php/etc/php/php.ini"
 
     newrelic_installed=false
     if [[ -n "$exts" ]]; then
